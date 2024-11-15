@@ -412,7 +412,7 @@ public class CredentialsMatchers {
      */
     @CheckForNull
     public static String describe(CredentialsMatcher matcher) {
-        return matcher instanceof CredentialsMatcher.CQL ? ((CredentialsMatcher.CQL) matcher).describe() : null;
+        return matcher instanceof CredentialsMatcher.CQL cql ? cql.describe() : null;
     }
 
     /**
@@ -451,7 +451,7 @@ public class CredentialsMatchers {
                     expression.append("\n    ").append(lines[i]);
                 }
                 throw new CQLSyntaxException(
-                        String.format("CQL syntax error: line %d:%d%n%s", line, charPositionInLine, expression),
+                        "CQL syntax error: line %d:%d%n%s".formatted(line, charPositionInLine, expression),
                         charPositionInLine);
             }
         });
@@ -470,7 +470,7 @@ public class CredentialsMatchers {
             throw new IllegalStateException("There should not be an empty stack when starting from an expression", e);
         } catch (CQLSyntaxError e) {
             throw new CQLSyntaxException(
-                    String.format("CQL syntax error:%n    %s%n    %s%s unexpected symbol %s", cql,
+                    "CQL syntax error:%n    %s%n    %s%s unexpected symbol %s".formatted(cql,
                             StringUtils.repeat(" ", e.interval.a),
                             StringUtils.repeat("^", e.interval.length()),
                             e.text

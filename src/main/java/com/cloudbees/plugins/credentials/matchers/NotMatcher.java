@@ -26,7 +26,7 @@ package com.cloudbees.plugins.credentials.matchers;
 import com.cloudbees.plugins.credentials.Credentials;
 import com.cloudbees.plugins.credentials.CredentialsMatcher;
 import edu.umd.cs.findbugs.annotations.NonNull;
-
+import java.io.Serial;
 import java.util.Objects;
 
 /**
@@ -40,6 +40,7 @@ public class NotMatcher implements CredentialsMatcher, CredentialsMatcher.CQL {
      *
      * @since 2.1.0
      */
+    @Serial
     private static final long serialVersionUID = 3301127941013284754L;
     /**
      * The matchers to match.
@@ -69,8 +70,8 @@ public class NotMatcher implements CredentialsMatcher, CredentialsMatcher.CQL {
      */
     @Override
     public String describe() {
-        String description = matcher instanceof CQL ? ((CQL) matcher).describe() : null;
-        return description == null ? null : description.startsWith("(") && description.endsWith(")") ? "!" + description : String.format("!(%s)", description);
+        String description = matcher instanceof CQL cql ? cql.describe() : null;
+        return description == null ? null : description.startsWith("(") && description.endsWith(")") ? "!" + description : "!(%s)".formatted(description);
     }
 
     /**

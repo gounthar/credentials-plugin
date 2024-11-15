@@ -107,10 +107,10 @@ public class HostnamePortSpecification extends DomainSpecification {
     @NonNull
     @Override
     public Result test(@NonNull DomainRequirement requirement) {
-        if (requirement instanceof HostnamePortRequirement) {
+        if (requirement instanceof HostnamePortRequirement portRequirement) {
             String hostPort =
-                    ((HostnamePortRequirement) requirement).getHostname() + ":"
-                            + ((HostnamePortRequirement) requirement).getPort();
+                    portRequirement.getHostname() + ":"
+                            + portRequirement.getPort();
             if (includes != null) {
                 boolean isInclude = false;
                 for (String include : includes.split("[,\\n ]")) {
@@ -149,9 +149,9 @@ public class HostnamePortSpecification extends DomainSpecification {
                     return Result.NEGATIVE;
                 }
             }
-        } else if (requirement instanceof HostnameRequirement) {
+        } else if (requirement instanceof HostnameRequirement hostnameRequirement) {
             // if the requirement is only for a hostname we can still match some of the spec.
-            String hostname = ((HostnameRequirement) requirement).getHostname();
+            String hostname = hostnameRequirement.getHostname();
             if (includes != null) {
                 boolean isInclude = false;
                 for (String include : includes.split("[,\\n ]")) {

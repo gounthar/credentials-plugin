@@ -322,8 +322,8 @@ public class CredentialsProviderTest {
         assertFalse(CredentialsProvider.allCredentialsDescriptors().isEmpty());
         DummyCredentials.DescriptorImpl descriptor = null;
         for (Descriptor<Credentials> d : CredentialsProvider.allCredentialsDescriptors()) {
-            if (d instanceof DummyCredentials.DescriptorImpl) {
-                descriptor = (DummyCredentials.DescriptorImpl) d;
+            if (d instanceof DummyCredentials.DescriptorImpl impl) {
+                descriptor = impl;
                 break;
             }
         }

@@ -26,7 +26,7 @@ package com.cloudbees.plugins.credentials.matchers;
 import com.cloudbees.plugins.credentials.Credentials;
 import com.cloudbees.plugins.credentials.CredentialsMatcher;
 import edu.umd.cs.findbugs.annotations.NonNull;
-
+import java.io.Serial;
 import java.util.Objects;
 
 /**
@@ -40,6 +40,7 @@ public class InstanceOfMatcher implements CredentialsMatcher, CredentialsMatcher
      *
      * @since 2.1.0
      */
+    @Serial
     private static final long serialVersionUID = 7841840317353807524L;
     /**
      * The type that the credentials must implement
@@ -69,7 +70,7 @@ public class InstanceOfMatcher implements CredentialsMatcher, CredentialsMatcher
      */
     @Override
     public String describe() {
-        return String.format("(instanceof %s)", clazz.getName());
+        return "(instanceof %s)".formatted(clazz.getName());
     }
 
     /**

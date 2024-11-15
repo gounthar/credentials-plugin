@@ -56,8 +56,7 @@ public class CredentialsParameterDefinition extends SimpleParameterDefinition {
      */
     @Override
     public ParameterDefinition copyWithDefaultValue(ParameterValue defaultValue) {
-        if (defaultValue instanceof CredentialsParameterValue) {
-            CredentialsParameterValue value = (CredentialsParameterValue) defaultValue;
+        if (defaultValue instanceof CredentialsParameterValue value) {
             return new CredentialsParameterDefinition(getName(), getDescription(), value.getValue(),
                     getCredentialType(), isRequired());
         }

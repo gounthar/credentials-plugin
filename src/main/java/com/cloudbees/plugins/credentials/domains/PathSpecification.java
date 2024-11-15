@@ -115,9 +115,9 @@ public class PathSpecification extends DomainSpecification {
     @NonNull
     @Override
     public Result test(@NonNull DomainRequirement requirement) {
-        if (requirement instanceof PathRequirement) {
+        if (requirement instanceof PathRequirement pathRequirement) {
             final AntPathMatcher matcher = new AntPathMatcher();
-            String path = ((PathRequirement) requirement).getPath();
+            String path = pathRequirement.getPath();
             if (!caseSensitive) {
                 path = path.toLowerCase();
             }

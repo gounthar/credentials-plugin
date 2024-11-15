@@ -460,8 +460,8 @@ public abstract class CredentialsStore implements AccessControlled, Saveable {
     @CheckForNull
     public String getRelativeLinkToContext() {
         ModelObject context = getContext();
-        if (context instanceof Item) {
-            return Functions.getRelativeLinkTo((Item) context);
+        if (context instanceof Item item) {
+            return Functions.getRelativeLinkTo(item);
         }
         StaplerRequest2 request = Stapler.getCurrentRequest2();
         if (request == null) {
@@ -471,8 +471,8 @@ public abstract class CredentialsStore implements AccessControlled, Saveable {
             String suffix = Jenkins.get().hasPermission(Jenkins.ADMINISTER) ? "/manage/" : "/";
             return URI.create(request.getContextPath() + suffix).normalize().toString();
         }
-        if (context instanceof User) {
-            return URI.create(request.getContextPath() + "/" + ((User) context).getUrl()+"/")
+        if (context instanceof User user) {
+            return URI.create(request.getContextPath() + "/" + user.getUrl()+"/")
                     .normalize().toString();
         }
         return null;
@@ -496,12 +496,12 @@ public abstract class CredentialsStore implements AccessControlled, Saveable {
             return relativeLink + "credentials/store/" + a.getUrlName() + "/";
         }
         List<CredentialsStoreAction> actions;
-        if (context instanceof Actionable) {
-            actions = ((Actionable) context).getActions(CredentialsStoreAction.class);
-        } else if (context instanceof Jenkins) {
-            actions = Util.filter(((Jenkins) context).getActions(), CredentialsStoreAction.class);
-        } else if (context instanceof User) {
-            actions = Util.filter(((User) context).getTransientActions(), CredentialsStoreAction.class);
+        if (context instanceof Actionable actionable) {
+            actions = actionable.getActions(CredentialsStoreAction.class);
+        } else if (context instanceof Jenkins jenkins) {
+            actions = Util.filter(jenkins.getActions(), CredentialsStoreAction.class);
+        } else if (context instanceof User user) {
+            actions = Util.filter(user.getTransientActions(), CredentialsStoreAction.class);
         } else {
             return null;
         }
@@ -541,12 +541,12 @@ public abstract class CredentialsStore implements AccessControlled, Saveable {
      */
     public final String getContextDisplayName() {
         ModelObject context = getContext();
-        if (context instanceof Item) {
-            return ((Item) context).getFullDisplayName();
+        if (context instanceof Item item) {
+            return item.getFullDisplayName();
         } else if (context instanceof Jenkins) {
             return context.getDisplayName();
-        } else if (context instanceof ItemGroup) {
-            return ((ItemGroup) context).getFullDisplayName();
+        } else if (context instanceof ItemGroup group) {
+            return group.getFullDisplayName();
         } else if (context instanceof User) {
             return Messages.CredentialsStoreAction_UserDisplayName(context.getDisplayName());
         } else {

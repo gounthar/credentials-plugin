@@ -27,6 +27,7 @@ package com.cloudbees.plugins.credentials.domains;
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Util;
+import java.io.Serial;
 
 /**
  * A requirement for a specific URI path, for example <code>/</code> or <code>/foo/bar/manchu</code>
@@ -37,6 +38,7 @@ public class PathRequirement extends DomainRequirement {
     /**
      * Ensure consistent serialization.
      */
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**

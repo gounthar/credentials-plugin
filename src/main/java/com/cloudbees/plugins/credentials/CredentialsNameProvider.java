@@ -64,9 +64,9 @@ public abstract class CredentialsNameProvider<C extends Credentials> {
             }
         } catch (Exception e) {
             if (LOGGER.isLoggable(Level.FINE)) {
-                if (credentials instanceof IdCredentials) {
+                if (credentials instanceof IdCredentials idCredentials) {
                     LogRecord lr = new LogRecord(Level.FINE, "Credential ID {0} Type {1}: Could not infer name");
-                    lr.setParameters(new Object[]{((IdCredentials) credentials).getId(), credentials.getClass()});
+                    lr.setParameters(new Object[]{idCredentials.getId(), credentials.getClass()});
                     lr.setThrown(e);
                     LOGGER.log(lr);
                 } else {

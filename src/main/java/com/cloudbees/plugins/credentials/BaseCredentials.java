@@ -25,6 +25,7 @@ package com.cloudbees.plugins.credentials;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.NonNull;
+import java.io.Serial;
 import jenkins.model.Jenkins;
 import org.kohsuke.stapler.export.ExportedBean;
 
@@ -37,6 +38,7 @@ public class BaseCredentials implements Credentials {
     /**
      * Set serialization version.
      */
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**

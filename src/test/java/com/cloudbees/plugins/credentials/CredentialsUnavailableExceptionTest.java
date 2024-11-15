@@ -176,8 +176,8 @@ public class CredentialsUnavailableExceptionTest {
     private SCMTrigger.SCMAction getScmAction(SCMTrigger trigger) {
         Collection<? extends Action> actions = trigger.getProjectActions();
         for (Action a : actions) {
-            if (a instanceof SCMTrigger.SCMAction) {
-                return (SCMTrigger.SCMAction)a;
+            if (a instanceof SCMTrigger.SCMAction action) {
+                return action;
             }
         }
         return null;
@@ -248,7 +248,7 @@ public class CredentialsUnavailableExceptionTest {
                             CredentialsProvider.getDefaultAuthenticationOf2(project),
                             Collections.emptyList()), CredentialsMatchers.withId(id));
             if (credentials == null) {
-                throw new IOException(String.format("Could not find credentials with id '%s'", id));
+                throw new IOException("Could not find credentials with id '%s'".formatted(id));
             } else {
                 listener.getLogger().printf("Checking remote revision as user: %s%n", credentials.getUsername());
                 Secret password = credentials.getPassword();

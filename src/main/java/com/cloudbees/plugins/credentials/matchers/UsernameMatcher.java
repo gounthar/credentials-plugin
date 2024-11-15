@@ -27,6 +27,7 @@ import com.cloudbees.plugins.credentials.Credentials;
 import com.cloudbees.plugins.credentials.CredentialsMatcher;
 import com.cloudbees.plugins.credentials.common.UsernameCredentials;
 import edu.umd.cs.findbugs.annotations.NonNull;
+import java.io.Serial;
 import org.apache.commons.lang.StringEscapeUtils;
 
 import java.util.Objects;
@@ -43,6 +44,7 @@ public class UsernameMatcher implements CredentialsMatcher, CredentialsMatcher.C
      *
      * @since 2.1.0
      */
+    @Serial
     private static final long serialVersionUID = -2166795904091485580L;
     /**
      * The username to match.
@@ -64,7 +66,7 @@ public class UsernameMatcher implements CredentialsMatcher, CredentialsMatcher.C
      * {@inheritDoc}
      */
     public boolean matches(@NonNull Credentials item) {
-        return item instanceof UsernameCredentials && username.equals(((UsernameCredentials) item).getUsername());
+        return item instanceof UsernameCredentials uc && username.equals(uc.getUsername());
     }
 
     /**
@@ -72,7 +74,7 @@ public class UsernameMatcher implements CredentialsMatcher, CredentialsMatcher.C
      */
     @Override
     public String describe() {
-        return String.format("(username == \"%s\")", StringEscapeUtils.escapeJava(username));
+        return "(username == \"%s\")".formatted(StringEscapeUtils.escapeJava(username));
     }
 
     /**

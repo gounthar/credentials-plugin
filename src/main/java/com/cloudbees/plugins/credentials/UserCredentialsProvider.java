@@ -108,8 +108,8 @@ public class UserCredentialsProvider extends CredentialsProvider {
      */
     @Override
     public CredentialsStore getStore(@CheckForNull ModelObject object) {
-        if (object instanceof User) {
-            return new StoreImpl((User) object);
+        if (object instanceof User user1) {
+            return new StoreImpl(user1);
         }
         return null;
     }

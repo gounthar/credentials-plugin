@@ -28,6 +28,7 @@ import com.cloudbees.plugins.credentials.CredentialsMatcher;
 import com.cloudbees.plugins.credentials.CredentialsScope;
 import com.cloudbees.plugins.credentials.common.IdCredentials;
 import edu.umd.cs.findbugs.annotations.NonNull;
+import java.io.Serial;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -46,6 +47,7 @@ public class ScopeMatcher implements CredentialsMatcher, CredentialsMatcher.CQL 
      *
      * @since 2.1.0
      */
+    @Serial
     private static final long serialVersionUID = -7786779595366393177L;
     /**
      * The scopes to match.

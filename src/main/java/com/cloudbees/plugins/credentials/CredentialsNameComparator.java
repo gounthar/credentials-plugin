@@ -24,6 +24,7 @@
 package com.cloudbees.plugins.credentials;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
+import java.io.Serial;
 import java.io.Serializable;
 import java.text.Collator;
 import java.util.Comparator;
@@ -41,6 +42,7 @@ public class CredentialsNameComparator implements Comparator<Credentials>, Seria
     /**
      * Standardize serialization format.
      */
+    @Serial
     private static final long serialVersionUID = 1;
     /**
      * The locale to compare with.

@@ -86,8 +86,7 @@ import org.springframework.security.core.Authentication;
         List<C> result = new ArrayList<>();
         if (ACL.SYSTEM2.equals(authentication)) {
             while (itemGroup != null) {
-                if (itemGroup instanceof MockFolder) {
-                    final MockFolder folder = (MockFolder) itemGroup;
+                if (itemGroup instanceof MockFolder folder) {
                     FolderCredentialsProperty property = getProperty(folder);
                     result.addAll(DomainCredentials.getCredentials(
                             property.getDomainCredentialsMap(),
@@ -95,8 +94,8 @@ import org.springframework.security.core.Authentication;
                             domainRequirements,
                             CredentialsMatchers.always()));
                 }
-                if (itemGroup instanceof Item) {
-                    itemGroup = ((Item) itemGroup).getParent();
+                if (itemGroup instanceof Item item) {
+                    itemGroup = item.getParent();
                 } else {
                     break;
                 }
@@ -107,8 +106,7 @@ import org.springframework.security.core.Authentication;
 
     @Override
     public CredentialsStore getStore(@CheckForNull ModelObject object) {
-        if (object instanceof MockFolder) {
-            final MockFolder folder = (MockFolder) object;
+        if (object instanceof MockFolder folder) {
             return getProperty(folder).getStore();
         }
         return null;

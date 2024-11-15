@@ -109,8 +109,8 @@ public class CredentialsSelectHelper extends Descriptor<CredentialsSelectHelper>
     @CheckForNull
     @Restricted(NoExternalUse.class)
     public ModelObject resolveContext(Object context) {
-        if (context instanceof ModelObject) {
-            return (ModelObject) context;
+        if (context instanceof ModelObject object) {
+            return object;
         }
         StaplerRequest2 request = Stapler.getCurrentRequest2();
         if (request != null) {
@@ -151,8 +151,8 @@ public class CredentialsSelectHelper extends Descriptor<CredentialsSelectHelper>
             boolean hasPermission = false;
             ModelObject current = context;
             while (current != null) {
-                if (current instanceof AccessControlled) {
-                    hasPermission = ((AccessControlled) current).hasPermission(CredentialsProvider.USE_OWN);
+                if (current instanceof AccessControlled controlled) {
+                    hasPermission = controlled.hasPermission(CredentialsProvider.USE_OWN);
                     break;
                 } else if (current instanceof ComputerSet) {
                     current = Jenkins.get();
@@ -399,13 +399,12 @@ public class CredentialsSelectHelper extends Descriptor<CredentialsSelectHelper>
             }
             this.url = token == null
                     ? null
-                    : String.format(
-                            "descriptor/%s/resolver/%s/provider/%s/context/%s",
-                            CredentialsSelectHelper.class.getName(),
-                            Util.rawEncode(resolver),
-                            Util.rawEncode(provider),
-                            Util.rawEncode(token)
-                    );
+                    : "descriptor/%s/resolver/%s/provider/%s/context/%s".formatted(
+                    CredentialsSelectHelper.class.getName(),
+                    Util.rawEncode(resolver),
+                    Util.rawEncode(provider),
+                    Util.rawEncode(token)
+            );
         }
 
         /**
@@ -663,8 +662,7 @@ public class CredentialsSelectHelper extends Descriptor<CredentialsSelectHelper>
          * @return our URL.
          */
         public String getUrl() {
-            return String.format(
-                    "%sdescriptor/%s/resolver/%s/provider/%s/context/%s",
+            return "%sdescriptor/%s/resolver/%s/provider/%s/context/%s".formatted(
                     Jenkins.get().getRootUrlFromRequest(),
                     CredentialsSelectHelper.class.getName(),
                     Util.rawEncode(resolver.getClass().getName()),
@@ -845,7 +843,7 @@ public class CredentialsSelectHelper extends Descriptor<CredentialsSelectHelper>
          */
         @Override
         public String getToken(ModelObject context) {
-            return context instanceof Item ? ((Item) context).getFullName() : null;
+            return context instanceof Item i ? i.getFullName() : null;
         }
 
         /**
@@ -879,7 +877,7 @@ public class CredentialsSelectHelper extends Descriptor<CredentialsSelectHelper>
          */
         @Override
         public String getToken(ModelObject context) {
-            return context instanceof User ? ((User) context).getId() : null;
+            return context instanceof User u ? u.getId() : null;
         }
 
         /**

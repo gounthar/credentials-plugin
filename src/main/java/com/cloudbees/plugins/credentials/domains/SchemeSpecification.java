@@ -110,8 +110,8 @@ public class SchemeSpecification extends DomainSpecification {
     @NonNull
     @Override
     public Result test(@NonNull DomainRequirement requirement) {
-        if (requirement instanceof SchemeRequirement) {
-            String scheme = toWellFormedScheme(((SchemeRequirement) requirement).getScheme());
+        if (requirement instanceof SchemeRequirement schemeRequirement) {
+            String scheme = toWellFormedScheme(schemeRequirement.getScheme());
             if (!schemes.isEmpty() && schemes.contains(scheme)) {
                 // we know the scheme is an exact test, no need to check this requirement any more
                 return Result.POSITIVE;

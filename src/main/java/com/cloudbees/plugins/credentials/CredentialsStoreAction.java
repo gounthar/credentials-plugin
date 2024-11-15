@@ -190,11 +190,9 @@ public abstract class CredentialsStoreAction
                     // key and make it harder to infer from the final MD5 hash of the whole what either the exact
                     // encrypted value or the encryption key is.
                     MessageDigest digest = MessageDigest.getInstance("SHA-256");
-                    if (source instanceof Secret) {
-                        Secret s = (Secret) source;
+                    if (source instanceof Secret s) {
                         digest.update(s.getEncryptedValue().getBytes(StandardCharsets.US_ASCII));
-                    } else if (source instanceof SecretBytes) {
-                        SecretBytes s = (SecretBytes) source;
+                    } else if (source instanceof SecretBytes s) {
                         digest.update(s.toString().getBytes(StandardCharsets.US_ASCII));
                     }
                     writer.setValue(Base64.getEncoder().encodeToString(digest.digest()));
@@ -409,12 +407,12 @@ public abstract class CredentialsStoreAction
     public final String getFullName() {
         String n;
         ModelObject context = getStore().getContext();
-        if (context instanceof Item) {
-            n = ((Item) context).getFullName();
-        } else if (context instanceof ItemGroup) {
-            n = ((ItemGroup) context).getFullName();
-        } else if (context instanceof User) {
-            n = "user:" + ((User) context).getId();
+        if (context instanceof Item item) {
+            n = item.getFullName();
+        } else if (context instanceof ItemGroup group) {
+            n = group.getFullName();
+        } else if (context instanceof User user) {
+            n = "user:" + user.getId();
         } else {
             n = "";
         }
@@ -433,12 +431,12 @@ public abstract class CredentialsStoreAction
     public final String getFullDisplayName() {
         String n;
         ModelObject context = getStore().getContext();
-        if (context instanceof Item) {
-            n = ((Item) context).getFullDisplayName();
-        } else if (context instanceof ItemGroup) {
-            n = ((ItemGroup) context).getFullDisplayName();
-        } else if (context instanceof User) {
-            n = Messages.CredentialsStoreAction_UserDisplayName(((User) context).getDisplayName());
+        if (context instanceof Item item) {
+            n = item.getFullDisplayName();
+        } else if (context instanceof ItemGroup group) {
+            n = group.getFullDisplayName();
+        } else if (context instanceof User user) {
+            n = Messages.CredentialsStoreAction_UserDisplayName(user.getDisplayName());
         } else {
             n = Jenkins.get().getFullDisplayName();
         }
@@ -738,8 +736,8 @@ public abstract class CredentialsStoreAction
             int index = 0;
             for (Credentials c : getStore().getCredentials(domain)) {
                 String id;
-                if (c instanceof IdCredentials) {
-                    id = ((IdCredentials) c).getId();
+                if (c instanceof IdCredentials credentials) {
+                    id = credentials.getId();
                 } else {
                     while (result.containsKey("index-" + index)) {
                         index++;
@@ -1185,8 +1183,8 @@ public abstract class CredentialsStoreAction
          */
         @Exported
         public String getDescription() {
-            return credentials instanceof StandardCredentials
-                    ? ((StandardCredentials) credentials).getDescription()
+            return credentials instanceof StandardCredentials sc
+                    ? sc.getDescription()
                     : null;
         }
 

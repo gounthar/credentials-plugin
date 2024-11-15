@@ -187,7 +187,7 @@ public class CredentialsParameterValue extends ParameterValue {
     private String url(CredentialsStore store) {
         for (Domain d: store.getDomains()) {
             for (Credentials c: store.getCredentials(d)) {
-                if (c instanceof IdCredentials && value.equals(((IdCredentials) c).getId())) {
+                if (c instanceof IdCredentials credentials && value.equals(credentials.getId())) {
                     String link = store.getRelativeLinkToAction();
                     return link == null ? null : link + d.getUrl() + "credential/"+ Util.rawEncode(value);
                 }

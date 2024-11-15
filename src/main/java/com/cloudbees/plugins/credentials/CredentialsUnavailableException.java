@@ -79,7 +79,7 @@ public class CredentialsUnavailableException extends RuntimeException {
     @Override
     public String getMessage() {
         String message = super.getMessage();
-        return message == null ? String.format("Property '%s' is currently unavailable", property)
-                : String.format("Property '%s' is currently unavailable, reason: %s", property, message);
+        return message == null ? "Property '%s' is currently unavailable".formatted(property)
+                : "Property '%s' is currently unavailable, reason: %s".formatted(property, message);
     }
 }

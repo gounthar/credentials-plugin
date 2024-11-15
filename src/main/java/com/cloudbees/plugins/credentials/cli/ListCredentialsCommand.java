@@ -71,8 +71,8 @@ public class ListCredentialsCommand extends BaseCredentialsCLICommand {
             int index = 0;
             for (Credentials c : credentials) {
                 String id;
-                if (c instanceof IdCredentials) {
-                    id = ((IdCredentials) c).getId();
+                if (c instanceof IdCredentials idCredentials) {
+                    id = idCredentials.getId();
                 } else {
                     while (nameById.containsKey("index-" + index)) {
                         index++;

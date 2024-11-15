@@ -108,8 +108,8 @@ public class ContextMenuIconUtils {
     }
     /** TODO copied from {@link Functions} but currently restricted */
     private static boolean isContextMenuVisible(Action a) {
-        if (a instanceof ModelObjectWithContextMenu.ContextMenuVisibility) {
-            return ((ModelObjectWithContextMenu.ContextMenuVisibility) a).isVisible();
+        if (a instanceof ModelObjectWithContextMenu.ContextMenuVisibility visibility) {
+            return visibility.isVisible();
         } else {
             return true;
         }
@@ -188,8 +188,8 @@ public class ContextMenuIconUtils {
         if (action.getIconFileName() == null) {
             return null;
         }
-        Icon icon = action instanceof IconSpec
-                ? IconSet.icons.getIconByClassSpec(((IconSpec) action).getIconClassName())
+        Icon icon = action instanceof IconSpec is
+                ? IconSet.icons.getIconByClassSpec(is.getIconClassName())
                 : null;
         if (icon == null) {
             icon = IconSet.icons.getIconByClassSpec(IconSet.toNormalizedIconNameClass(action.getIconFileName()));

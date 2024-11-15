@@ -59,8 +59,8 @@ public abstract class BaseCredentialsCLICommand extends CLICommand {
         int index = 0;
         for (Credentials c : credentialsList) {
             String cid;
-            if (c instanceof IdCredentials) {
-                cid = ((IdCredentials) c).getId();
+            if (c instanceof IdCredentials credentials) {
+                cid = credentials.getId();
             } else {
                 while (ids.contains("index-" + index)) {
                     index++;
