@@ -56,12 +56,13 @@ public class UsernamePasswordCredentialsImplTest {
     @Issue("JENKINS-67132")
     @Test public void subclassDeserialization() {
         SpecialUsernamePasswordCredentialsImpl c = (SpecialUsernamePasswordCredentialsImpl) Jenkins.XSTREAM2.fromXML(
-            "<com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImplTest_-SpecialUsernamePasswordCredentialsImpl>\n" +
-            "  <scope>GLOBAL</scope>\n" +
-            "  <id>xxx</id>\n" +
-            "  <username>bob</username>\n" +
-            "  <password>s3cr3t</password>\n" +
-            "</com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImplTest_-SpecialUsernamePasswordCredentialsImpl>");
+            """
+            <com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImplTest_-SpecialUsernamePasswordCredentialsImpl>
+              <scope>GLOBAL</scope>
+              <id>xxx</id>
+              <username>bob</username>
+              <password>s3cr3t</password>
+            </com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImplTest_-SpecialUsernamePasswordCredentialsImpl>""");
         assertTrue(c.initialized);
         assertEquals("bob", c.getUsername());
         assertTrue(c.isUsernameSecret());

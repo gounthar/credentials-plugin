@@ -103,8 +103,7 @@ public abstract class CredentialsResolver<F extends Credentials, T extends Crede
 
         // detect an type error
         Type bt = Types.getBaseClass(getClass(), Credentials.class);
-        if (bt instanceof ParameterizedType) {
-            ParameterizedType pt = (ParameterizedType) bt;
+        if (bt instanceof ParameterizedType pt) {
             // this 't' is the closest approximation of T of Descriptor<T>.
             Class<?> t = Types.erasure(pt.getActualTypeArguments()[0]);
             if (!t.isAssignableFrom(fromClass)) {

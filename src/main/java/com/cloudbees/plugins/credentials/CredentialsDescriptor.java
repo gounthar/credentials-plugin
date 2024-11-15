@@ -270,14 +270,14 @@ public abstract class CredentialsDescriptor extends Descriptor<Credentials> impl
      */
     @NonNull
     public static ModelObject unwrapContext(@NonNull ModelObject context) {
-        if (context instanceof CredentialsSelectHelper.WrappedCredentialsStore) {
-            return ((CredentialsSelectHelper.WrappedCredentialsStore) context).getStore().getContext();
+        if (context instanceof CredentialsSelectHelper.WrappedCredentialsStore store) {
+            return store.getStore().getContext();
         }
-        if (context instanceof CredentialsStoreAction.CredentialsWrapper) {
-            return ((CredentialsStoreAction.CredentialsWrapper) context).getStore().getContext();
+        if (context instanceof CredentialsStoreAction.CredentialsWrapper wrapper) {
+            return wrapper.getStore().getContext();
         }
-        if (context instanceof CredentialsStoreAction.DomainWrapper) {
-            return ((CredentialsStoreAction.DomainWrapper) context).getStore().getContext();
+        if (context instanceof CredentialsStoreAction.DomainWrapper wrapper) {
+            return wrapper.getStore().getContext();
         }
         return context;
     }
@@ -331,12 +331,12 @@ public abstract class CredentialsDescriptor extends Descriptor<Credentials> impl
             Ancestor a = ancestors.get(i);
             Object o = a.getObject();
             // special case of unwrapping our internal wrapper classes.
-            if (o instanceof CredentialsSelectHelper.WrappedCredentialsStore) {
-                o = ((CredentialsSelectHelper.WrappedCredentialsStore) o).getStore().getContext();
-            } else if (o instanceof CredentialsStoreAction.CredentialsWrapper) {
-                o = ((CredentialsStoreAction.CredentialsWrapper) o).getStore().getContext();
-            } else if (o instanceof CredentialsStoreAction.DomainWrapper) {
-                o = ((CredentialsStoreAction.DomainWrapper) o).getStore().getContext();
+            if (o instanceof CredentialsSelectHelper.WrappedCredentialsStore store) {
+                o = store.getStore().getContext();
+            } else if (o instanceof CredentialsStoreAction.CredentialsWrapper wrapper) {
+                o = wrapper.getStore().getContext();
+            } else if (o instanceof CredentialsStoreAction.DomainWrapper wrapper) {
+                o = wrapper.getStore().getContext();
             } else if (o instanceof Descriptor && i == 1) { // URL is /descriptorByName/...
                 // TODO this is a https://issues.jenkins-ci.org/browse/JENKINS-19413 workaround
 
@@ -436,7 +436,7 @@ public abstract class CredentialsDescriptor extends Descriptor<Credentials> impl
                     // ok we give up, we are not thirsty for more, we'll let "normal" ancestor in path logic continue
                 }
             }
-            if (type.isInstance(o) && o instanceof ModelObject && CredentialsProvider.hasStores((ModelObject) o)) {
+            if (type.isInstance(o) && o instanceof ModelObject object && CredentialsProvider.hasStores(object)) {
                 return type.cast(o);
             }
         }
@@ -474,8 +474,8 @@ public abstract class CredentialsDescriptor extends Descriptor<Credentials> impl
             try {
                 JellyContext jelly = Functions.getCurrentJellyContext();
                 Object it = jelly.findVariable("it");
-                if (it instanceof CredentialsStore) {
-                    ModelObject context = ((CredentialsStore) it).getContext();
+                if (it instanceof CredentialsStore store) {
+                    ModelObject context = store.getContext();
                     for (CredentialsSelectHelper.ContextResolver r : ExtensionList
                             .lookup(CredentialsSelectHelper.ContextResolver.class)) {
                         String token = r.getToken(context);
@@ -517,8 +517,8 @@ public abstract class CredentialsDescriptor extends Descriptor<Credentials> impl
             try {
                 JellyContext jelly = Functions.getCurrentJellyContext();
                 Object it = jelly.findVariable("it");
-                if (it instanceof CredentialsStore) {
-                    ModelObject context = ((CredentialsStore) it).getContext();
+                if (it instanceof CredentialsStore store) {
+                    ModelObject context = store.getContext();
                     for (CredentialsSelectHelper.ContextResolver r : ExtensionList
                             .lookup(CredentialsSelectHelper.ContextResolver.class)) {
                         String token = r.getToken(context);
@@ -573,8 +573,8 @@ public abstract class CredentialsDescriptor extends Descriptor<Credentials> impl
             try {
                 JellyContext jelly = Functions.getCurrentJellyContext();
                 Object it = jelly.findVariable("it");
-                if (it instanceof CredentialsStore) {
-                    ModelObject context = ((CredentialsStore) it).getContext();
+                if (it instanceof CredentialsStore store) {
+                    ModelObject context = store.getContext();
                     for (CredentialsSelectHelper.ContextResolver r : ExtensionList
                             .lookup(CredentialsSelectHelper.ContextResolver.class)) {
                         String token = r.getToken(context);

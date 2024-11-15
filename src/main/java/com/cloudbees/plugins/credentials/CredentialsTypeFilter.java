@@ -31,6 +31,7 @@ import hudson.ExtensionPoint;
 import hudson.Util;
 import hudson.model.AbstractDescribableImpl;
 import hudson.model.Descriptor;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -51,6 +52,7 @@ public abstract class CredentialsTypeFilter extends AbstractDescribableImpl<Cred
     /**
      * Ensure consistent serialization.
      */
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
@@ -96,6 +98,7 @@ public abstract class CredentialsTypeFilter extends AbstractDescribableImpl<Cred
         /**
          * Ensure consistent serialization.
          */
+        @Serial
         private static final long serialVersionUID = 1L;
 
         /**
@@ -169,6 +172,7 @@ public abstract class CredentialsTypeFilter extends AbstractDescribableImpl<Cred
         /**
          * Ensure consistent serialization.
          */
+        @Serial
         private static final long serialVersionUID = 1L;
         /**
          * The set of {@link Descriptor#getId}s that will be allowed.
@@ -281,6 +285,7 @@ public abstract class CredentialsTypeFilter extends AbstractDescribableImpl<Cred
         /**
          * Ensure consistent serialization.
          */
+        @Serial
         private static final long serialVersionUID = 1L;
         /**
          * The set of {@link Descriptor#getId}s that will not be allowed.

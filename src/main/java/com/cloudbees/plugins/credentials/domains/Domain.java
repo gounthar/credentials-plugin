@@ -29,6 +29,7 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.Util;
 import java.io.ObjectStreamException;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,6 +49,7 @@ public class Domain implements Serializable {
     /**
      * Set serialization version.
      */
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**

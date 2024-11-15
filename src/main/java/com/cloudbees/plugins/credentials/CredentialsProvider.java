@@ -540,8 +540,8 @@ public abstract class CredentialsProvider extends Descriptor<CredentialsProvider
         if (item == null) {
             return lookupCredentialsInItemGroup(type, Jenkins.get(), authentication, domainRequirements);
         }
-        if (item instanceof ItemGroup) {
-            return lookupCredentialsInItemGroup(type, (ItemGroup)item, authentication, domainRequirements);
+        if (item instanceof ItemGroup group) {
+            return lookupCredentialsInItemGroup(type, group, authentication, domainRequirements);
         }
         authentication = authentication == null ? ACL.SYSTEM2 : authentication;
         domainRequirements = domainRequirements
@@ -615,8 +615,8 @@ public abstract class CredentialsProvider extends Descriptor<CredentialsProvider
         if (item == null) {
             return listCredentialsInItemGroup(type, Jenkins.get(), authentication, domainRequirements, matcher);
         }
-        if (item instanceof ItemGroup) {
-            return listCredentialsInItemGroup(type, (ItemGroup) item, authentication, domainRequirements, matcher);
+        if (item instanceof ItemGroup group) {
+            return listCredentialsInItemGroup(type, group, authentication, domainRequirements, matcher);
         }
         authentication = authentication == null ? ACL.SYSTEM2 : authentication;
         domainRequirements = domainRequirements
@@ -730,10 +730,10 @@ public abstract class CredentialsProvider extends Descriptor<CredentialsProvider
                     }
                     // now walk up the model object tree
                     // TODO make this an extension point perhaps ContextResolver could help
-                    if (current instanceof Item) {
-                        current = ((Item) current).getParent();
+                    if (current instanceof Item item) {
+                        current = item.getParent();
                         iterator = providers.iterator();
-                    } else if (current instanceof User) {
+                    } else if (current instanceof User user) {
                         Jenkins jenkins = Jenkins.get();
                         Authentication a;
                         if (jenkins.hasPermission(USE_ITEM) && current == User.current()) {
@@ -741,7 +741,7 @@ public abstract class CredentialsProvider extends Descriptor<CredentialsProvider
                             a = Jenkins.getAuthentication2();
                         } else {
                             try {
-                                a = ((User) current).impersonate2();
+                                a = user.impersonate2();
                             } catch (UsernameNotFoundException e) {
                                 a = Jenkins.ANONYMOUS2;
                             }
@@ -839,8 +839,8 @@ public abstract class CredentialsProvider extends Descriptor<CredentialsProvider
      */
     @NonNull
     /*package*/ static Authentication getDefaultAuthenticationOf2(Item item) {
-        if (item instanceof Queue.Task) {
-            return Tasks.getAuthenticationOf2((Queue.Task) item);
+        if (item instanceof Queue.Task task) {
+            return Tasks.getAuthenticationOf2(task);
         } else {
             return ACL.SYSTEM2;
         }
@@ -1298,7 +1298,7 @@ public abstract class CredentialsProvider extends Descriptor<CredentialsProvider
 
     @NonNull
     private <C extends Credentials> List<C> getCredentialsInItemFallback(@NonNull Class<C> type, @NonNull Item item, @Nullable Authentication authentication, @NonNull List<DomainRequirement> domainRequirements) {
-        return getCredentialsInItemGroup(type, item instanceof ItemGroup ? (ItemGroup) item : item.getParent(),
+        return getCredentialsInItemGroup(type, item instanceof ItemGroup ig ? ig : item.getParent(),
                 authentication, domainRequirements);
     }
 
@@ -1341,8 +1341,8 @@ public abstract class CredentialsProvider extends Descriptor<CredentialsProvider
                                                                          @Nullable Authentication authentication,
                                                                          @NonNull List<DomainRequirement> domainRequirements,
                                                                          @NonNull CredentialsMatcher matcher) {
-        if (item instanceof ItemGroup) {
-            return getCredentialIdsInItemGroup(type, (ItemGroup) item, authentication, domainRequirements, matcher);
+        if (item instanceof ItemGroup group) {
+            return getCredentialIdsInItemGroup(type, group, authentication, domainRequirements, matcher);
         }
         return getCredentialsInItem(type, item, authentication, domainRequirements)
                 .stream()
@@ -1384,8 +1384,8 @@ public abstract class CredentialsProvider extends Descriptor<CredentialsProvider
         if (!isEnabled()) {
             return false;
         }
-        if (descriptor instanceof CredentialsDescriptor) {
-            if (!((CredentialsDescriptor) descriptor).isApplicable(this)) {
+        if (descriptor instanceof CredentialsDescriptor credentialsDescriptor) {
+            if (!credentialsDescriptor.isApplicable(this)) {
                 return false;
             }
         }
@@ -1484,8 +1484,8 @@ public abstract class CredentialsProvider extends Descriptor<CredentialsProvider
      */
     @NonNull
     public static Fingerprint getOrCreateFingerprintOf(@NonNull Credentials c) throws IOException {
-        String pseudoFilename = String.format("Credential id=%s name=%s",
-                c instanceof IdCredentials ? ((IdCredentials) c).getId() : "unknown", CredentialsNameProvider.name(c));
+        String pseudoFilename = "Credential id=%s name=%s".formatted(
+                c instanceof IdCredentials ic ? ic.getId() : "unknown", CredentialsNameProvider.name(c));
         try {
             MessageDigest md5 = MessageDigest.getInstance("MD5");
             DigestOutputStream out = new DigestOutputStream(OutputStream.nullOutputStream(), md5);
@@ -1635,13 +1635,13 @@ public abstract class CredentialsProvider extends Descriptor<CredentialsProvider
                                 FingerprintFacet f = iterator.next();
                                 // For all the node-tracking credentials, check to see if we can remove
                                 // older instances of these credential fingerprints, or from nodes which no longer exist
-                                if (f instanceof NodeCredentialsFingerprintFacet) {
+                                if (f instanceof NodeCredentialsFingerprintFacet facet) {
                                     // Remove older instances
-                                    if (StringUtils.equals(nodeName, ((NodeCredentialsFingerprintFacet) f).getNodeName())) {
+                                    if (StringUtils.equals(nodeName, facet.getNodeName())) {
                                         start = Math.min(start, f.getTimestamp());
                                         iterator.remove();
                                     // Remove unneeded instances
-                                    } else if (!jenkinsNodeNames.contains(((NodeCredentialsFingerprintFacet) f).getNodeName())) {
+                                    } else if (!jenkinsNodeNames.contains(facet.getNodeName())) {
                                         iterator.remove();
                                     }
                                 }
@@ -1730,8 +1730,8 @@ public abstract class CredentialsProvider extends Descriptor<CredentialsProvider
                             long start = timestamp;
                             for (Iterator<FingerprintFacet> iterator = facets.iterator(); iterator.hasNext(); ) {
                                 FingerprintFacet f = iterator.next();
-                                if (f instanceof ItemCredentialsFingerprintFacet && StringUtils
-                                        .equals(fullName, ((ItemCredentialsFingerprintFacet) f).getItemFullName())) {
+                                if (f instanceof ItemCredentialsFingerprintFacet facet && StringUtils
+                                        .equals(fullName, facet.getItemFullName())) {
                                     start = Math.min(start, f.getTimestamp());
                                     iterator.remove();
                                 }

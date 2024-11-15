@@ -88,22 +88,24 @@ public class CLICommandsTest {
         assertThat(SystemCredentialsProvider.getInstance().getDomainCredentialsMap().keySet(),
                 not(hasItem(hasProperty("name", is("smokes")))));
         assertThat(invoker.withStdin(asStream(
-                "<com.cloudbees.plugins.credentials.domains.Domain>\n"
-                        + "  <name>smokes</name>\n"
-                        + "</com.cloudbees.plugins.credentials.domains.Domain>"))
+                """
+                <com.cloudbees.plugins.credentials.domains.Domain>
+                  <name>smokes</name>
+                </com.cloudbees.plugins.credentials.domains.Domain>"""))
                 .invokeWithArgs("system::system::jenkins"), succeededSilently());
         assertThat(SystemCredentialsProvider.getInstance().getDomainCredentialsMap().keySet(),
                 hasItem(hasProperty("name", is("smokes"))));
         cmd = new CreateCredentialsByXmlCommand();
         invoker = new CLICommandInvoker(r, cmd);
         assertThat(invoker.withStdin(asStream(
-                "<com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl>\n"
-                        + "  <scope>GLOBAL</scope>\n"
-                        + "  <id>smokey-id</id>\n"
-                        + "  <description>created from xml</description>\n"
-                        + "  <username>example-com-deployer</username>\n"
-                        + "  <password>super-secret</password>\n"
-                        + "</com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl>"))
+                """
+                <com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl>
+                  <scope>GLOBAL</scope>
+                  <id>smokey-id</id>
+                  <description>created from xml</description>
+                  <username>example-com-deployer</username>
+                  <password>super-secret</password>
+                </com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl>"""))
                         .invokeWithArgs("system::system::jenkins", "smokes"),
                 succeededSilently());
         Domain domain = null;
@@ -132,36 +134,40 @@ public class CLICommandsTest {
         assertThat(SystemCredentialsProvider.getInstance().getDomainCredentialsMap().keySet(),
                 not(hasItem(hasProperty("name", is("smokes")))));
         assumeThat(invoker.withStdin(asStream(
-                "<com.cloudbees.plugins.credentials.domains.Domain>\n"
-                        + "  <name>smokes</name>\n"
-                        + "</com.cloudbees.plugins.credentials.domains.Domain>"))
+                """
+                <com.cloudbees.plugins.credentials.domains.Domain>
+                  <name>smokes</name>
+                </com.cloudbees.plugins.credentials.domains.Domain>"""))
                 .invokeWithArgs("system::system::jenkins"), succeededSilently());
         assertThat(invoker.withStdin(asStream(
-                "<com.cloudbees.plugins.credentials.domains.Domain>\n"
-                        + "  <name>smokes</name>\n"
-                        + "</com.cloudbees.plugins.credentials.domains.Domain>"))
+                """
+                <com.cloudbees.plugins.credentials.domains.Domain>
+                  <name>smokes</name>
+                </com.cloudbees.plugins.credentials.domains.Domain>"""))
                 .invokeWithArgs("system::system::jenkins"), failedWith(1));
 
         cmd = new CreateCredentialsByXmlCommand();
         invoker = new CLICommandInvoker(r, cmd);
         assumeThat(invoker.withStdin(asStream(
-                "<com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl>\n"
-                        + "  <scope>GLOBAL</scope>\n"
-                        + "  <id>smokey-id</id>\n"
-                        + "  <description>created from xml</description>\n"
-                        + "  <username>example-com-deployer</username>\n"
-                        + "  <password>super-secret</password>\n"
-                        + "</com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl>"))
+                """
+                <com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl>
+                  <scope>GLOBAL</scope>
+                  <id>smokey-id</id>
+                  <description>created from xml</description>
+                  <username>example-com-deployer</username>
+                  <password>super-secret</password>
+                </com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl>"""))
                         .invokeWithArgs("system::system::jenkins", "smokes"),
                 succeededSilently());
         assertThat(invoker.withStdin(asStream(
-                "<com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl>\n"
-                        + "  <scope>GLOBAL</scope>\n"
-                        + "  <id>smokey-id</id>\n"
-                        + "  <description>created from xml</description>\n"
-                        + "  <username>example-com-deployer</username>\n"
-                        + "  <password>super-secret</password>\n"
-                        + "</com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl>"))
+                """
+                <com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl>
+                  <scope>GLOBAL</scope>
+                  <id>smokey-id</id>
+                  <description>created from xml</description>
+                  <username>example-com-deployer</username>
+                  <password>super-secret</password>
+                </com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl>"""))
                         .invokeWithArgs("system::system::jenkins", "smokes"),
                 failedWith(1));
     }
@@ -268,13 +274,14 @@ public class CLICommandsTest {
         ));
         invoker = new CLICommandInvoker(r, new UpdateCredentialsByXmlCommand());
         assertThat(invoker.withStdin(asStream(
-                "<com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl>\n"
-                        + "  <scope>SYSTEM</scope>\n"
-                        + "  <id>smokes-id</id>\n"
-                        + "  <description>updated by xml</description>\n"
-                        + "  <username>soot</username>\n"
-                        + "  <password>vapour text</password>\n"
-                        + "</com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl>"))
+                """
+                <com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl>
+                  <scope>SYSTEM</scope>
+                  <id>smokes-id</id>
+                  <description>updated by xml</description>
+                  <username>soot</username>
+                  <password>vapour text</password>
+                </com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl>"""))
                         .invokeWithArgs("system::system::jenkins", "smokes", "smokes-id"),
                 succeededSilently());
         assertThat(store.getCredentials(smokes).size(), is(1));

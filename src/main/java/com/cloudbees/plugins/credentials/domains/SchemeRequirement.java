@@ -27,6 +27,7 @@ package com.cloudbees.plugins.credentials.domains;
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Util;
+import java.io.Serial;
 
 /**
  * A requirement for a specific URI scheme, for example <code>http</code> or <code>smtp</code>
@@ -39,6 +40,7 @@ public class SchemeRequirement extends DomainRequirement {
      *
      * @since 1.9
      */
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**

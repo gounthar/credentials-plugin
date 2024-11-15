@@ -36,6 +36,7 @@ import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Util;
 import hudson.util.Secret;
+import java.io.Serial;
 import java.io.Serializable;
 import java.security.GeneralSecurityException;
 import java.util.Arrays;
@@ -69,6 +70,7 @@ public class SecretBytes implements Serializable {
     /**
      * Standardize serialization.
      */
+    @Serial
     private static final long serialVersionUID = 1L;
     /**
      * The key that encrypts the data on disk.
@@ -376,11 +378,11 @@ public class SecretBytes implements Serializable {
         public SecretBytes convert(Class type, Object value) {
             if (value==null)
                 return null;
-            if (value instanceof String) {
-                return SecretBytes.fromString((String) value);
+            if (value instanceof String string) {
+                return SecretBytes.fromString(string);
             }
-            if (value instanceof SecretBytes) {
-                return (SecretBytes) value;
+            if (value instanceof SecretBytes bytes) {
+                return bytes;
             }
             throw new IllegalClassException(SecretBytes.class, value.getClass());
         }

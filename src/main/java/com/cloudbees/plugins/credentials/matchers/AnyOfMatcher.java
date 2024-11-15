@@ -27,6 +27,7 @@ import com.cloudbees.plugins.credentials.Credentials;
 import com.cloudbees.plugins.credentials.CredentialsMatcher;
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.NonNull;
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -42,6 +43,7 @@ public class AnyOfMatcher implements CredentialsMatcher, CredentialsMatcher.CQL 
      *
      * @since 2.1.0
      */
+    @Serial
     private static final long serialVersionUID = 8214348092732916263L;
     /**
      * The matchers to match.
@@ -78,7 +80,7 @@ public class AnyOfMatcher implements CredentialsMatcher, CredentialsMatcher.CQL 
         final StringBuilder sb = new StringBuilder("(");
         boolean first = true;
         for (CredentialsMatcher m : matchers) {
-            String description = m instanceof CQL ? ((CQL) m).describe() : null;
+            String description = m instanceof CQL cql ? cql.describe() : null;
             if (description == null) {
                 return null;
             }

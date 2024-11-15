@@ -128,7 +128,7 @@ public class SecretBytesTest {
     @Test
     public void testCompatibilityFromString() {
         String tagName = Foo.class.getName().replace("$", "_-");
-        String xml = String.format("<%s><password>%s</password></%s>", tagName, Base64.encodeBase64String("secret".getBytes()), tagName);
+        String xml = "<%s><password>%s</password></%s>".formatted(tagName, Base64.encodeBase64String("secret".getBytes()), tagName);
         Foo foo = new Foo();
         Jenkins.XSTREAM.fromXML(xml, foo);
         assertThat(SecretBytes.getPlainData(foo.password), is("secret".getBytes()));

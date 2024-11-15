@@ -26,6 +26,7 @@ package com.cloudbees.plugins.credentials.matchers;
 import com.cloudbees.plugins.credentials.Credentials;
 import com.cloudbees.plugins.credentials.CredentialsMatcher;
 import edu.umd.cs.findbugs.annotations.NonNull;
+import java.io.Serial;
 
 /**
  * Matches credentials based on a constant result.
@@ -38,6 +39,7 @@ public class ConstantMatcher implements CredentialsMatcher, CredentialsMatcher.C
      *
      * @since 2.1.0
      */
+    @Serial
     private static final long serialVersionUID = 8270819649776908382L;
     /**
      * Whether to match.

@@ -63,8 +63,8 @@ public final class CredentialsParameterBinder extends InvisibleAction {
                 final Cause.UserIdCause cause = run.getCause(Cause.UserIdCause.class);
                 final String userId = cause == null ? null : cause.getUserId();
                 for (final ParameterValue parameterValue : action) {
-                    if (parameterValue instanceof CredentialsParameterValue) {
-                        resolver.bindCredentialsParameter(userId, (CredentialsParameterValue) parameterValue);
+                    if (parameterValue instanceof CredentialsParameterValue value) {
+                        resolver.bindCredentialsParameter(userId, value);
                     }
                 }
             }

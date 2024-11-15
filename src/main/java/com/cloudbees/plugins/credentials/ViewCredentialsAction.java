@@ -222,8 +222,7 @@ public class ViewCredentialsAction implements Action, IconSpec, AccessControlled
      * @return {@code true} if the action should be visible.
      */
     public boolean isVisible() {
-        if (context instanceof AccessControlled) {
-            AccessControlled accessControlled = (AccessControlled) this.context;
+        if (context instanceof AccessControlled accessControlled) {
             if (isVisibleForAdministrator(accessControlled) || !accessControlled.hasPermission(CredentialsProvider.VIEW)) {
                 // must have permission
                 return false;
@@ -274,8 +273,8 @@ public class ViewCredentialsAction implements Action, IconSpec, AccessControlled
                             continue;
                         }
                         boolean masked;
-                        if (c instanceof IdCredentials) {
-                            String id = ((IdCredentials) c).getId();
+                        if (c instanceof IdCredentials credentials) {
+                            String id = credentials.getId();
                             masked = ids.contains(id);
                             ids.add(id);
                         } else {
@@ -320,12 +319,12 @@ public class ViewCredentialsAction implements Action, IconSpec, AccessControlled
      */
     public String getContextFullName() {
         String n;
-        if (context instanceof Item) {
-            n = ((Item) context).getFullName();
-        } else if (context instanceof ItemGroup) {
-            n = ((ItemGroup) context).getFullName();
-        } else if (context instanceof User) {
-            n = "user/" + ((User) context).getId();
+        if (context instanceof Item item) {
+            n = item.getFullName();
+        } else if (context instanceof ItemGroup group) {
+            n = group.getFullName();
+        } else if (context instanceof User user) {
+            n = "user/" + user.getId();
         } else {
             n = "";
         }
@@ -353,14 +352,14 @@ public class ViewCredentialsAction implements Action, IconSpec, AccessControlled
      */
     public String getContextFullDisplayName() {
         String n;
-        if (context instanceof Item) {
-            n = ((Item) context).getFullDisplayName();
+        if (context instanceof Item item) {
+            n = item.getFullDisplayName();
         } else if (context instanceof Jenkins) {
             n = context.getDisplayName();
-        } else if (context instanceof ItemGroup) {
-            n = ((ItemGroup) context).getFullDisplayName();
-        } else if (context instanceof User) {
-            n = Messages.CredentialsStoreAction_UserDisplayName(((User) context).getDisplayName());
+        } else if (context instanceof ItemGroup group) {
+            n = group.getFullDisplayName();
+        } else if (context instanceof User user) {
+            n = Messages.CredentialsStoreAction_UserDisplayName(user.getDisplayName());
         } else {
             n = Jenkins.get().getFullDisplayName();
         }
@@ -374,7 +373,7 @@ public class ViewCredentialsAction implements Action, IconSpec, AccessControlled
     @Override
     public ACL getACL() {
         final AccessControlled accessControlled =
-                context instanceof AccessControlled ? (AccessControlled) context : Jenkins.get();
+                context instanceof AccessControlled ac ? ac : Jenkins.get();
         return new ACL() {
             @Override
             public boolean hasPermission2(@NonNull Authentication a, @NonNull Permission permission) {
@@ -510,7 +509,7 @@ public class ViewCredentialsAction implements Action, IconSpec, AccessControlled
          * @return the {@link IdCredentials#getId()} of the {@link #credentials}.
          */
         public String getId() {
-            return credentials instanceof IdCredentials ? ((IdCredentials) credentials).getId() : null;
+            return credentials instanceof IdCredentials ic ? ic.getId() : null;
         }
 
         /**
@@ -538,8 +537,8 @@ public class ViewCredentialsAction implements Action, IconSpec, AccessControlled
          * @throws IOException if there was an issue with formatting this using the markup formatter.
          */
         public String getDescription() throws IOException {
-            return credentials instanceof StandardCredentials ? Jenkins.get().getMarkupFormatter()
-                    .translate(((StandardCredentials) credentials).getDescription()) : null;
+            return credentials instanceof StandardCredentials sc ? Jenkins.get().getMarkupFormatter()
+                    .translate(sc.getDescription()) : null;
         }
 
         /**

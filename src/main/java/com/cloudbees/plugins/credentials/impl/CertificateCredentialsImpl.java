@@ -40,6 +40,7 @@ import hudson.util.Secret;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectStreamException;
+import java.io.Serial;
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
@@ -86,6 +87,7 @@ public class CertificateCredentialsImpl extends BaseStandardCredentials implemen
     /**
      * Ensure consistent serialization.
      */
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
@@ -364,6 +366,7 @@ public class CertificateCredentialsImpl extends BaseStandardCredentials implemen
         /**
          * Ensure consistent serialization.
          */
+        @Serial
         private static final long serialVersionUID = 1L;
 
         /**
@@ -638,6 +641,7 @@ public class CertificateCredentialsImpl extends BaseStandardCredentials implemen
      */
     public static class PEMEntryKeyStoreSource extends KeyStoreSource implements Serializable {
 
+        @Serial
         private static final long serialVersionUID = 1L;
 
         /** The chain of certificates encoded as multiple PEM objects*/
@@ -746,8 +750,7 @@ public class CertificateCredentialsImpl extends BaseStandardCredentials implemen
                         return FormValidation.error(Messages.CertificateCredentialsImpl_PEMNoCertificates());
                     }
                     Certificate cert = pemEncodables.get(0).toCertificate();
-                    if (cert instanceof X509Certificate) {
-                        X509Certificate x509 = (X509Certificate) cert;
+                    if (cert instanceof X509Certificate x509) {
                         return FormValidation.ok(x509.getSubjectDN().getName());
                     }
                     // no details
@@ -783,18 +786,18 @@ public class CertificateCredentialsImpl extends BaseStandardCredentials implemen
                     PrivateKey pk = pemEncodables.get(0).toPrivateKey();
                     String format;
                     String length;
-                    if (pk instanceof RSAPrivateKey) {
+                    if (pk instanceof RSAPrivateKey aPrivateKey) {
                         format = "RSA";
-                        length = ((RSAKey)pk).getModulus().bitLength() + " bit";
-                    } else if (pk instanceof ECPrivateKey) {
+                        length = aPrivateKey.getModulus().bitLength() + " bit";
+                    } else if (pk instanceof ECPrivateKey cPrivateKey) {
                         format = "elliptic curve (EC)";
-                        length =  ((ECPrivateKey)pk).getParams().getOrder().bitLength() + " bit";
-                    } else if (pk instanceof DSAPrivateKey) {
+                        length =  cPrivateKey.getParams().getOrder().bitLength() + " bit";
+                    } else if (pk instanceof DSAPrivateKey aPrivateKey) {
                         format = "DSA";
-                        length = ((DSAPrivateKey)pk).getParams().getP().bitLength() + " bit";
-                    } else if (pk instanceof DHPrivateKey) {
+                        length = aPrivateKey.getParams().getP().bitLength() + " bit";
+                    } else if (pk instanceof DHPrivateKey hPrivateKey) {
                         format = "Diffie-Hellman";
-                        length =  ((DHPrivateKey)pk).getParams().getP().bitLength() + " bit";
+                        length =  hPrivateKey.getParams().getP().bitLength() + " bit";
                     } else if (pk != null) {
                         // spotbugs things pk may be null, but we have already checked 
                         // the size of pemEncodables is one and contains a private key

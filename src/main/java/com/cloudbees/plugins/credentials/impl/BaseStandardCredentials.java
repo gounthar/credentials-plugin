@@ -163,8 +163,8 @@ public abstract class BaseStandardCredentials extends BaseCredentials implements
                                 continue;
                             }
                             return FormValidation.warning("The ID ‘%s’ is already in use in %s", value,
-                                    storeContext instanceof Item
-                                            ? ((Item) storeContext).getFullDisplayName()
+                                    storeContext instanceof Item i
+                                            ? i.getFullDisplayName()
                                             : storeContext.getDisplayName());
                         }
                     }

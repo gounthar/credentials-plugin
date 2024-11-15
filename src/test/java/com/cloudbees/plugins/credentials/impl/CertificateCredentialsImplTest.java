@@ -219,8 +219,7 @@ public class CertificateCredentialsImplTest {
 
         DomNodeList<DomNode> allOptions = htmlPage.getDocumentElement().querySelectorAll("select.dropdownList option");
         boolean optionFound = allOptions.stream().anyMatch(domNode -> {
-            if (domNode instanceof HtmlOption) {
-                HtmlOption option = (HtmlOption) domNode;
+            if (domNode instanceof HtmlOption option) {
                 if (option.getVisibleText().equals(certificateDisplayName)) {
                     try {
                         HtmlElementUtil.click(option);
@@ -272,8 +271,7 @@ public class CertificateCredentialsImplTest {
 
         DomNodeList<DomNode> allOptions = htmlPage.getDocumentElement().querySelectorAll("select.dropdownList option");
         boolean optionFound = allOptions.stream().anyMatch(domNode -> {
-            if (domNode instanceof HtmlOption) {
-                HtmlOption option = (HtmlOption) domNode;
+            if (domNode instanceof HtmlOption option) {
                 if (option.getVisibleText().equals(certificateDisplayName)) {
                     try {
                         HtmlElementUtil.click(option);

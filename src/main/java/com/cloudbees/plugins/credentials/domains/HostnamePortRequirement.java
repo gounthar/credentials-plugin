@@ -25,6 +25,7 @@
 package com.cloudbees.plugins.credentials.domains;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
+import java.io.Serial;
 
 /**
  * A requirement for a {@link Domain} that includes {@link com.cloudbees.plugins.credentials.Credentials} for a
@@ -38,6 +39,7 @@ public class HostnamePortRequirement extends HostnameRequirement {
      *
      * @since 1.9
      */
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**

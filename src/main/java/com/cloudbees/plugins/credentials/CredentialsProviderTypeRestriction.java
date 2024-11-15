@@ -30,6 +30,7 @@ import hudson.ExtensionPoint;
 import hudson.model.AbstractDescribableImpl;
 import hudson.model.Descriptor;
 import hudson.util.ListBoxModel;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -53,6 +54,7 @@ public abstract class CredentialsProviderTypeRestriction
     /**
      * Ensure consistent serialization.
      */
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
@@ -104,6 +106,7 @@ public abstract class CredentialsProviderTypeRestriction
         /**
          * Ensure consistent serialization.
          */
+        @Serial
         private static final long serialVersionUID = 1L;
         /**
          * The {@link CredentialsProvider} {@link Descriptor#getId}.
@@ -223,8 +226,8 @@ public abstract class CredentialsProviderTypeRestriction
                 // but we do it in a single pass with this code
                 boolean haveProviderMatch = false;
                 for (CredentialsProviderTypeRestriction r : restrictions) {
-                    if (!haveProviderMatch && r instanceof Includes && provider.clazz.getName()
-                            .equals(((Includes) r).getProvider())) {
+                    if (!haveProviderMatch && r instanceof Includes includes && provider.clazz.getName()
+                            .equals(includes.getProvider())) {
                         haveProviderMatch = true;
                     }
                     if (r.filter(provider, type)) {
@@ -292,6 +295,7 @@ public abstract class CredentialsProviderTypeRestriction
         /**
          * Ensure consistent serialization.
          */
+        @Serial
         private static final long serialVersionUID = 1L;
         /**
          * The {@link CredentialsProvider} {@link Descriptor#getId}.

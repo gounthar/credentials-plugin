@@ -107,8 +107,8 @@ public class HostnameSpecification extends DomainSpecification {
     @NonNull
     @Override
     public Result test(@NonNull DomainRequirement requirement) {
-        if (requirement instanceof HostnameRequirement) {
-            String hostname = ((HostnameRequirement) requirement).getHostname();
+        if (requirement instanceof HostnameRequirement hostnameRequirement) {
+            String hostname = hostnameRequirement.getHostname();
             if (includes != null) {
                 boolean isInclude = false;
                 for (String include : includes.split("[,\\n ]")) {

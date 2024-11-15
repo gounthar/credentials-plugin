@@ -31,6 +31,7 @@ import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.io.Serial;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -47,6 +48,7 @@ public class BeanPropertyMatcher<T extends Serializable> implements CredentialsM
     /**
      * Standardize serialization.
      */
+    @Serial
     private static final long serialVersionUID = 1L;
     /**
      * The property name.
@@ -76,22 +78,22 @@ public class BeanPropertyMatcher<T extends Serializable> implements CredentialsM
     @Override
     public String describe() {
         if (expected == null) {
-            return String.format("(%s == null)", name);
+            return "(%s == null)".formatted(name);
         }
-        if (expected instanceof String) {
-            return String.format("(%s == \"%s\")", name, StringEscapeUtils.escapeJava((String) expected));
+        if (expected instanceof String string) {
+            return "(%s == \"%s\")".formatted(name, StringEscapeUtils.escapeJava(string));
         }
         if (expected instanceof Character) {
-            return String.format("(%s == '%s')", name, StringEscapeUtils.escapeJava(expected.toString()));
+            return "(%s == '%s')".formatted(name, StringEscapeUtils.escapeJava(expected.toString()));
         }
         if (expected instanceof Number) {
-            return String.format("(%s == %s)", name, expected);
+            return "(%s == %s)".formatted(name, expected);
         }
         if (expected instanceof Boolean) {
             return expected.toString();
         }
-        if (expected instanceof Enum) {
-            return String.format("(%s == %s.%s)", name, ((Enum) expected).getDeclaringClass().getName(), ((Enum) expected).name());
+        if (expected instanceof Enum enum1) {
+            return "(%s == %s.%s)".formatted(name, enum1.getDeclaringClass().getName(), enum1.name());
         }
         return null; // we cannot describe the expected value in CQL
     }

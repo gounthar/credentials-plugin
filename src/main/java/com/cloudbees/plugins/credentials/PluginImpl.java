@@ -53,23 +53,23 @@ public class PluginImpl extends Plugin {
                 "user-store",
         }) {
             IconSet.icons.addIcon(new Icon(
-                    String.format("icon-credentials-%s icon-sm", name),
-                    String.format("credentials/images/%s.svg", name),
+                    "icon-credentials-%s icon-sm".formatted(name),
+                    "credentials/images/%s.svg".formatted(name),
                             Icon.ICON_SMALL_STYLE, IconType.PLUGIN)
             );
             IconSet.icons.addIcon(new Icon(
-                    String.format("icon-credentials-%s icon-md", name),
-                    String.format("credentials/images/%s.svg", name),
+                    "icon-credentials-%s icon-md".formatted(name),
+                    "credentials/images/%s.svg".formatted(name),
                             Icon.ICON_MEDIUM_STYLE, IconType.PLUGIN)
             );
             IconSet.icons.addIcon(new Icon(
-                    String.format("icon-credentials-%s icon-lg", name),
-                    String.format("credentials/images/%s.svg", name),
+                    "icon-credentials-%s icon-lg".formatted(name),
+                    "credentials/images/%s.svg".formatted(name),
                             Icon.ICON_LARGE_STYLE, IconType.PLUGIN)
             );
             IconSet.icons.addIcon(new Icon(
-                    String.format("icon-credentials-%s icon-xlg", name),
-                    String.format("credentials/images/%s.svg", name),
+                    "icon-credentials-%s icon-xlg".formatted(name),
+                    "credentials/images/%s.svg".formatted(name),
                             Icon.ICON_XLARGE_STYLE, IconType.PLUGIN)
             );
         }

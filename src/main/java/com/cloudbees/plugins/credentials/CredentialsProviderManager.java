@@ -35,6 +35,7 @@ import hudson.model.Saveable;
 import hudson.security.Permission;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -67,6 +68,7 @@ public class CredentialsProviderManager extends DescriptorVisibilityFilter imple
     /**
      * Ensure standardized serialization.
      */
+    @Serial
     private static final long serialVersionUID = 1L;
     /**
      * Our {@link CredentialsProvider} filter.
@@ -142,20 +144,19 @@ public class CredentialsProviderManager extends DescriptorVisibilityFilter imple
     public boolean filter(Object context, @NonNull Descriptor descriptor) {
         Map<CredentialsProviderTypeRestrictionDescriptor, List<CredentialsProviderTypeRestriction>> restrictions =
                 restrictions();
-        if (restrictions != null && descriptor instanceof CredentialsDescriptor) {
+        if (restrictions != null && descriptor instanceof CredentialsDescriptor type) {
             CredentialsProvider provider = null;
-            if (context instanceof CredentialsProvider) {
-                provider = (CredentialsProvider) context;
-            } else if (context instanceof CredentialsStore) {
-                provider = ((CredentialsStore) context).getProvider();
-            } else if (context instanceof CredentialsStoreAction.DomainWrapper) {
-                provider = ((CredentialsStoreAction.DomainWrapper) context).getStore().getProvider();
-            } else if (context instanceof CredentialsStoreAction.CredentialsWrapper) {
-                provider = ((CredentialsStoreAction.CredentialsWrapper) context).getStore().getProvider();
+            if (context instanceof CredentialsProvider credentialsProvider) {
+                provider = credentialsProvider;
+            } else if (context instanceof CredentialsStore store) {
+                provider = store.getProvider();
+            } else if (context instanceof CredentialsStoreAction.DomainWrapper wrapper) {
+                provider = wrapper.getStore().getProvider();
+            } else if (context instanceof CredentialsStoreAction.CredentialsWrapper wrapper) {
+                provider = wrapper.getStore().getProvider();
             }
 
             if (provider != null) {
-                CredentialsDescriptor type = (CredentialsDescriptor) descriptor;
                 for (Map.Entry<CredentialsProviderTypeRestrictionDescriptor, List<CredentialsProviderTypeRestriction>>
                         group : restrictions.entrySet()) {
                     if (!group.getKey().filter(group.getValue(), provider, type)) {
@@ -164,11 +165,11 @@ public class CredentialsProviderManager extends DescriptorVisibilityFilter imple
                 }
             }
         }
-        if (descriptor instanceof CredentialsDescriptor) {
-            return typeFilter == null || typeFilter.filter((CredentialsDescriptor) descriptor);
+        if (descriptor instanceof CredentialsDescriptor credentialsDescriptor) {
+            return typeFilter == null || typeFilter.filter(credentialsDescriptor);
         }
-        if (descriptor instanceof CredentialsProvider && context instanceof Jenkins) {
-            return providerFilter == null || providerFilter.filter((CredentialsProvider) descriptor);
+        if (descriptor instanceof CredentialsProvider provider && context instanceof Jenkins) {
+            return providerFilter == null || providerFilter.filter(provider);
         }
         return true;
     }
